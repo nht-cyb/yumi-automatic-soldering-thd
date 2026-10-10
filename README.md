@@ -313,9 +313,9 @@ python generate_rapid.py     # → program/clicked_positions_converted_module.tx
 
 Both scripts read `converted_output/clicked_positions_converted.txt`; change `input_file` at the bottom of each to use another file. If the input is missing, `generate_rapid.py` exits without writing anything or printing an error.
 
-`generate_rapid.py` merges three parts in order: the point declarations (`program/inputgp/2310_outer_grid.txt`), the template module with the calibration and per-joint routines (`program/inputgp/calibrateXYZ_for_shifted_station.txt`), and one call per joint appended to the end of `main()`. The calls follow the line order of the converted file, so to use an ACO tour, reorder those lines first.
+`generate_rapid.py` starts from the template module (`program/inputgp/calibrateXYZ_for_shifted_station.txt`), which holds the calibration and per-joint routines. It adds any point declarations from `program/inputgp/2310_outer_grid.txt` that the template does not already have, and replaces the `MoveUpDown` calls in `main()` with one call per selected joint. The calls follow the line order of the converted file, so to use an ACO tour, reorder those lines first.
 
-Each call is written as `FuncName P<row><col>;`, for example `FuncName P0102;`. Replace `FuncName` with the routine to run at each joint (`MoveUpDown` in the template), and make sure the point names match the declared robtargets.
+Each call is written as `MoveUpDown <point>;`. Rows map to letters and columns to numbers, so (1, 2) becomes `A2` and (18, 24) becomes `R24`. The included dataset only declares the holes on the board edge. For any other selected hole the script prints a warning; add its `robtarget` to the dataset file before loading the module.
 
 ### 3.4 Run on YuMi
 

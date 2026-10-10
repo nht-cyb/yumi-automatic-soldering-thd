@@ -1,5 +1,5 @@
-FuncName P0101;
-FuncName P0102;
-FuncName P0103;
-FuncName P0104;
-FuncName P0105;
+MoveUpDown A1;
+MoveUpDown A2;
+MoveUpDown A3;
+MoveUpDown A4;
+MoveUpDown A5;

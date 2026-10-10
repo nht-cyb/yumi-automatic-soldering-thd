@@ -1,27 +1,31 @@
 import os
 
+PROC_NAME = "MoveUpDown"  # RAPID routine called at each joint
+
+def point_name(row, col):
+    # Row 1..18 -> letter A..R, column 1..24 -> number, e.g. (1, 2) -> A2
+    if not 1 <= row <= 26 or col < 1:
+        raise ValueError
+    return f"{chr(ord('A') + row - 1)}{col}"
+
 def generate_commands(file_path):
     commands = []
     try:
         # Open the file and process line by line
         with open(file_path, 'r') as file:
             for line in file:
-                # Split the line into x and y values
+                # Split the line into row and column values
                 values = line.strip().split()
                 if len(values) != 2:
                     print(f"Skipping invalid line: {line.strip()}")
                     continue
 
                 try:
-                    x = int(values[0])
-                    y = int(values[1])
-
-                    # Format x and y with leading zeros if necessary
-                    x_formatted = f"{x:02d}"
-                    y_formatted = f"{y:02d}"
+                    row = int(values[0])
+                    col = int(values[1])
 
                     # Create the command string
-                    command = f"FuncName P{x_formatted}{y_formatted};"
+                    command = f"{PROC_NAME} {point_name(row, col)};"
                     commands.append(command)
                 except ValueError:
                     print(f"Skipping invalid data: {line.strip()}")
