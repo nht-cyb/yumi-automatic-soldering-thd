@@ -1,4 +1,4 @@
-# Automatic Soldering of Through-Hole Components with ABB YuMi
+# Automatic Soldering for Through-Hole Components with ABB YuMi
 
 Automated soldering of through-hole (THD) components on PCBs with the **ABB YuMi (IRB 14000)** collaborative robot, a 3D-printed soldering-iron mount and a custom solder-wire feeder and cleaner.
 The software pipeline goes from *"click the pins you want soldered"* to a ready-to-run **RAPID** program. Selected joints are mapped to robot coordinates using a calibrated point dataset, then ordered by **Ant Colony Optimization (ACO)** to minimise travel between joints.
