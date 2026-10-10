@@ -167,6 +167,10 @@ The script extracts x, y, z from each `robtarget`. It estimates the real hole pi
 
 Δ is the mean distance between consecutive points in a row (mm), and ε(x) is the mean pitch error. With the generated dataset, the arm moves smoothly between joints, without pose changes, pauses or pin collisions.
 
+| Hand-taught points (left) vs. generated dataset (right), 1.5× speed |
+| --- |
+| ![Left: the arm pauses to change pose between hand-taught points. Right: the arm moves continuously using the generated dataset](docs/gifs/motion_comparison.gif) |
+
 ### 2.3 Calibration (each time the board is replaced)
 
 The task needs about **0.2 mm** accuracy, and a replaced board never sits exactly where the last one did.
@@ -192,6 +196,8 @@ Open `web_pcb_selector/index.html` and choose a board size (3×7, 4×6, 5×7, 6�
 | Board size menu | Selecting joints |
 | --- | --- |
 | ![Board size menu of the web selector](docs/images/pcb_selector.png) | ![Joints selected on a board](docs/images/pcb_boards.png) |
+
+![Choosing a 5×7 cm board and selecting rows of joints in the web selector (1.5× speed)](docs/gifs/web_selector.gif)
 
 ```bash
 python data_processing/pixel_to_grid.py --input selection.txt --board 5x7 --output points_grid.txt
@@ -256,6 +262,10 @@ The script merges three files in order: point declarations (`dataset.txt`), the 
 ### 3.5 The soldering cycle at one joint
 
 ![Solder cycle timing](docs/images/solder_cycle.png)
+
+| Close-up along a row (3× speed) | Top-down view (2× speed) |
+| --- | --- |
+| ![Close-up of the iron soldering joints along a row](docs/gifs/soldering_closeup.gif) | ![Top-down view of YuMi soldering a row of joints](docs/gifs/soldering_topdown.gif) |
 
 Simplified pseudo-code (not runnable RAPID; zones, tool data and semicolons are omitted, and `.xy` stands for setting `x` and `y`). The real routine is in `rapid/proc.txt`.
 
