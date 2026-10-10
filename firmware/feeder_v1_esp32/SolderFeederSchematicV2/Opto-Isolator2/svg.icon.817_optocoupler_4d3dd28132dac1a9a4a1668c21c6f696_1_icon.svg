@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.5216 23.04" height="0.32in" x="0in" y="0in" gorn="0" width="0.160022in" version="1.2"  id="svg3336">
+    <desc >
+        <referenceFile >optoisolator817_4DIP.svg</referenceFile>
+    </desc>
+    <metadata  id="metadata3360">
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <cc:Work xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" rdf:about="">
+                <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+                <dc:type xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+                <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/"/>
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <defs  id="defs3358"/>
+    <g gorn="0.3"  id="g3338" partID="854423770">
+        <g gorn="0.3.0"  id="breadboard">
+            <g height="0" x="1.3464" y="0.72" gorn="0.3.0.0" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector3terminal" stroke="none"/>
+            <rect height="2.52" x="1.3464" y="0" gorn="0.3.0.1" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector3pin" stroke="none"/>
+            <g height="0" x="8.5464" y="0.72" gorn="0.3.0.2" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector2terminal" stroke="none"/>
+            <rect height="2.52" x="8.5464" y="0" gorn="0.3.0.3" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector2pin" stroke="none"/>
+            <rect height="2.22912" x="0" y="19.08" gorn="0.3.0.4" width="11.5216" stroke-width="0" fill="#404040"  id="lower"/>
+            <g gorn="0.3.0.5"  id="g3362">
+                <rect height="19.08" x="0" y="1.8" gorn="0.3.0.5.0" width="11.5216" stroke-width="0" fill="#000000"  id="upper"/>
+                <g transform="matrix(0,1.0000001,-0.9999999,0,0,0)" >
+                    <g >
+                        <g >
+                            <g >
+                                <g style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Droid Sans;-inkscape-font-specification:Droid Sans;text-anchor:start;" gorn="0.3.0.5.1.0.0.0.0" fill="#e6e6e6"  font-size="4.20481" id="label" stroke="none">
+                                    <text x="7.4168921" y="-4.3168397" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Droid Sans;-inkscape-font-specification:Droid Sans;font-size:5.50000761px" gorn="0.3.0.5.1.0.0.0.0.0"  id="tspan3449">817</text>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <circle cx="8.7652807" cy="4.7300019" gorn="0.3.0.6" stroke-width="0" fill="#8c8c8c"  r="2.1600001" id="circle3348"/>
+            <text x="7.9215798" y="6.6240001" font-weight="bold" style="font-weight:bold;font-family:Droid Sans;text-anchor:middle;" gorn="0.3.0.7" stroke-width="0"  font-size="3.168" id="text3350"/>
+            <g height="0" x="1.3464" y="22.32" gorn="0.3.0.8" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector0terminal" stroke="none"/>
+            <rect height="3.06" x="1.3464" y="19.98" gorn="0.3.0.9" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector0pin" stroke="none"/>
+            <g height="0" x="8.5464" y="22.32" gorn="0.3.0.10" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector1terminal" stroke="none"/>
+            <rect height="3.06" x="8.5464" y="19.98" gorn="0.3.0.11" width="1.656" stroke-width="0" fill="#8C8C8C"  id="connector1pin" stroke="none"/>
+        </g>
+    </g>
+</svg>
