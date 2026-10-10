@@ -46,30 +46,72 @@ The system has three groups of blocks:
 
 ```
 .
-├── web_pcb_selector/        # HTML/JS page for picking joints (3×7 … 8×12 cm boards)
+├── web_pcb_selector/            # HTML/JS page for picking joints, plus the scripts that turn clicks into RAPID
+│   ├── index.html               # board-size menu
+│   ├── 5x7.html, 6x8.html       # interactive perfboard pages
+│   ├── script.js, styles.css
+│   ├── img/                     # perfboard images (3×7 … 8×12 cm)
+│   ├── pixel_point_conv.py      # clicked pixel coords → (row, col)
+│   ├── generate_cmd.py          # (row, col) list → one PROC call per joint
+│   ├── generate_rapid.py        # point data + calls → RAPID module
+│   ├── clickdata/               # saved clicks from the page
+│   ├── converted_output/        # clicks converted to (row, col)
+│   ├── command/                 # generated call list
+│   ├── program/inputgp/         # robtarget grid and calibration module used as generator input
+│   └── Web/                     # screen recordings of the selector
 ├── data_processing/
-│   ├── pixel_to_grid.py     # pixel coords → (row, col), de-duplication
-│   ├── build_dataset.py     # reference robtargets → full hole grid in robot frame
-│   ├── calib.py             # shift the coordinate origin to the actual board position
-│   └── selective_approx.py  # approximate a full grid of joints in xyz coordinates
+│   ├── data_extraction/         # Python scripts for the point dataset
+│   │   ├── extract_to_txt.py            # robtargets → x, y, z text
+│   │   ├── extract_data_to_excel.py     # robtargets → x, y, z spreadsheet
+│   │   ├── save_multiple_data.py        # all input files → one workbook, one sheet each
+│   │   ├── generate_points.py           # taught outer-edge points → full 18×24 hole grid
+│   │   ├── visualize.py                 # plot the extracted points
+│   │   ├── input/                       # taught robtarget files
+│   │   ├── output/                      # extracted spreadsheets
+│   │   ├── generated point/             # generated inner grid points
+│   │   └── visualize data/              # extracted coordinates and plots
+│   ├── calibrate/0511/          # RAPID calibration modules (shift / set XYZ, work object)
+│   ├── cal_points_v1/           # first C++ grid-point calculator
+│   ├── Input real data/         # recordings of the taught-point plots
+│   └── *.mp4, *.xlsx            # calibration videos and extracted coordinates
 ├── aco/
-│   ├── aco_tsp.m            # ACO / TSP solver (MATLAB, used for reported results)
-│   └── aco_tsp.py           # Python version, used for plotting
+│   ├── ACO_Matlab/              # ACO / TSP solver (MATLAB): ant_colony.m, myaco.m, helpers
+│   │   ├── data/, *.csv, *.xlsx, berlin52.*   # test point sets
+│   │   └── results/             # result figures (.fig, .png)
+│   └── Traveling Salesman/
+│       ├── Code Matlab/         # Berlin52 version of the MATLAB solver
+│       └── Code Python/         # Python version (main.py, aco.py, ant_colony.py, graphs.py, util.py)
+├── ACO-results/                 # recordings and plots of ACO runs
 ├── rapid/
-│   ├── proc.txt             # solder-cycle PROC for one joint
-│   └── merge_rapid.py       # dataset + proc + cmd → one RAPID module
+│   ├── MainModule.mod           # main right-arm module
+│   ├── one_row_*.mod, move_p_row.mod   # single-row test programs
+│   ├── SimpleMove.mod, SimpleMove.sys  # first motion test
+│   ├── calibrateXYZ_for_shifted_station.txt   # calibration module for a shifted board
+│   └── *.txt, *.xlsx            # taught robtarget data and backups
 ├── firmware/
-│   ├── cad/                 # iron mount, PCB fixture, feeders, cleaner (STEP/STL)
-│   ├── cleaner_esp32/       # ESP32 + Nidec 24H BLDC
-│   │   ├── schematic/
-│   │   └── code/
-│   ├── feeder_v1_esp32/     # ESP32 + Nidec 24H BLDC
-│   │   ├── schematic/
-│   │   └── code/
-│   └── feeder_v2_mega/      # Arduino Mega 2560 + TB6600 + NEMA14 (final)
-│       ├── schematic/
-│       └── code/
-└── docs/images/
+│   ├── cad/                     # SolidWorks parts, STL and STEP files
+│   │   ├── GripperVer1/, GripperVer2/   # soldering-iron mount, first and second build
+│   │   ├── Board Setup/                 # PCB fixture
+│   │   ├── Print2/                      # parts exported for 3D printing
+│   │   ├── SLW_Hakko/                   # soldering-iron model
+│   │   └── chot/                        # pin and transmission-head base
+│   ├── cleaner_bldc/            # ESP32 + Nidec 24H BLDC tip cleaner
+│   │   └── BLDC_Cleaner/        # sketch
+│   ├── feeder_v1_esp32/         # ESP32 + Nidec 24H BLDC
+│   │   ├── nidec/               # sketch
+│   │   ├── SolderFeeder1/       # CAD
+│   │   ├── schematic2/          # Fritzing schematic
+│   │   └── SolderFeederSchematicV2/
+│   └── feeder_v2_mega/          # Arduino Mega 2560 + TB6600 + NEMA14 (final)
+│       ├── Solder_Feeder.ino    # sketch
+│       ├── schematic3/          # Fritzing schematic and exports
+│       ├── DM860A Stepper Motor Driver/   # Fritzing part
+│       └── img/                 # gear-train renders
+├── results_img/                 # photos of soldered boards per test case, result charts
+├── reports/                     # thesis, slides and short report
+├── yumi_readme/                 # RobotStudio getting-started notes
+├── scripts/make_gifs.sh         # builds the README GIFs
+└── docs/                        # images and GIFs used in this README
 ```
 
 ---
@@ -125,15 +167,17 @@ This version is based on a 3D-printer filament extruder. A **9:5:1 spur-gear tra
 
 **Requirements**
 - ABB RobotStudio (RobotWare with RAPID) connected to the YuMi controller
-- Python 3.8+ with `numpy` and `matplotlib`
+- Python 3.8+ with `numpy`, `matplotlib`, `pandas`, `xlsxwriter` and `plotly`
 - MATLAB R2020+ (recommended for ACO, which ran much faster than the Python version)
 - Arduino IDE (ESP32 core for v1)
 
 ```bash
 git clone https://github.com/nht-cyb/yumi-automatic-soldering-thd.git
 cd yumi-automatic-soldering-thd
-pip install numpy matplotlib
+pip install numpy matplotlib pandas xlsxwriter plotly
 ```
+
+The scripts are research code: each one reads its input and output paths from variables in the file, relative to its own folder. Run them from that folder and edit the variables to point at your files.
 
 ### 2.1 Start pose
 
@@ -152,10 +196,15 @@ Jog the right arm with the FlexPendant joystick to a home pose. The wrist camera
 3. Generate the full grid:
 
 ```bash
-python data_processing/build_dataset.py --refs refs.txt --board 5x7 --output dataset.txt
+cd data_processing/data_extraction
+python extract_to_txt.py     # input/2310_outer_grid.txt → visualize data/2310_outer_grid.txt
+python generate_points.py    # → generated point/432_grid_points.txt
+python visualize.py          # optional 3D plot of the points
 ```
 
-The script extracts x, y, z from each `robtarget`. It estimates the real hole pitch, which is not exactly 2.54 mm because of measurement angle, tilt and jog resolution. It replaces outliers with the averaged estimate, fills in every remaining hole and writes the points in RAPID syntax.
+Put the file of saved robtargets in `input/` and set `filename` at the top of `extract_to_txt.py`. That script extracts x, y, z from each `robtarget`. `generate_points.py` then interpolates between the taught edge points to fill in the full 18 × 24 grid (432 holes) and writes one `X, Y, Z` line per hole. `extract_data_to_excel.py` and `save_multiple_data.py` export the same coordinates to spreadsheets in `output/`.
+
+The method described in the thesis (see `reports/`) also estimates the real hole pitch, which is not exactly 2.54 mm because of measurement angle, tilt and jog resolution, and replaces outliers with the averaged estimate.
 
 ![Dataset methods compared](docs/images/dataset_methods.png)
 
@@ -191,7 +240,7 @@ Re-setup takes **about 4 minutes**. Re-teaching every point by hand used to take
 
 ### 3.1 Select the joints to solder
 
-Open `web_pcb_selector/index.html` and choose a board size (3×7, 4×6, 5×7, 6×8, 7×9 or 8×12 cm). Click a hole to select it, or drag to select a whole row. You can undo, clear all or save.
+Open `web_pcb_selector/index.html` and choose a board size. The menu lists 3×7, 4×6, 5×7, 6×8, 7×9 and 8×12 cm, but only the 5×7 and 6×8 pages are included in this repository. Click a hole to select it, or drag to select a whole row. You can undo, clear all or save. **Save Positions** downloads `clicked_positions.txt`; move it into `web_pcb_selector/clickdata/`.
 
 | Board size menu | Selecting joints |
 | --- | --- |
@@ -200,8 +249,11 @@ Open `web_pcb_selector/index.html` and choose a board size (3×7, 4×6, 5×7, 6�
 ![Choosing a 5×7 cm board and selecting rows of joints in the web selector (1.5× speed)](docs/gifs/web_selector.gif)
 
 ```bash
-python data_processing/pixel_to_grid.py --input selection.txt --board 5x7 --output points_grid.txt
+cd web_pcb_selector
+python pixel_point_conv.py   # clickdata/clicked_positions.txt → converted_output/clicked_positions_converted.txt
 ```
+
+The script snaps each pixel to the nearest hole, drops duplicates and sorts by row and column. The pixel position of hole (1, 1) and the hole spacing are set in `reference_x`, `reference_y` and `grid_spacing` near the end of the script; change them for a different board page. If the output file already exists, the script writes `clicked_positions_output_<n>.txt` instead of overwriting it.
 
 | Input (pixels x, y) | Output (row, col) |
 | --- | --- |
@@ -215,14 +267,22 @@ python data_processing/pixel_to_grid.py --input selection.txt --board 5x7 --outp
 ### 3.2 Optimize the path (ACO / TSP)
 
 ```matlab
-% MATLAB (used for the reported results)
-aco_tsp('points_grid.txt')
+% MATLAB (used for the reported results), from aco/ACO_Matlab/
+ant_colony   % Berlin52 benchmark, reads berlin52.csv
+myaco        % board points
 ```
 
 ```bash
 # Python
-python aco/aco_tsp.py --input points_grid.txt --output order.txt
+cd "aco/Traveling Salesman/Code Python"
+python main.py
 ```
+
+All three have the author's own paths hard-coded, so edit them first:
+
+- `ant_colony.m`: remove or change the `cd('Q:\Thesis\Code\ACO_Matlab')` line so that `berlin52.csv` is found.
+- `myaco.m`: change the `cd(...)` line, supply an `input.csv` of joint coordinates and assign its columns to `x` and `y`. Set `n` to the number of joints.
+- `main.py`: point `pd.read_csv(...)` at a tab-separated coordinate file with a header row. The tour is plotted with `plotly`.
 
 Each ant builds a tour. Pheromones are updated after each iteration, and the shortest tour found is kept. The parameters were tuned on the **TSP Berlin52** benchmark, whose known optimal tour length is 7,542.
 
@@ -246,14 +306,20 @@ The Python version with local search (60 ants, 100 iterations, α = 15, β = 20,
 ### 3.3 Generate the RAPID program
 
 ```bash
-python rapid/merge_rapid.py dataset.txt rapid/proc.txt cmd.txt --output output.mod
+cd web_pcb_selector
+python generate_cmd.py       # → command/commands.txt, one call per joint
+python generate_rapid.py     # → program/clicked_positions_converted_module.txt
 ```
 
-The script merges three files in order: point declarations (`dataset.txt`), the soldering `PROC` (`rapid/proc.txt`), then `main()` (`cmd.txt`), which holds one call per joint in the order from `order.txt` (`[proc name] + [point name]`).
+Before running, set `input_file` at the bottom of both scripts to `converted_output/clicked_positions_converted.txt`. As committed, they point at paths that do not exist, and `generate_rapid.py` then exits without writing anything or printing an error.
+
+`generate_rapid.py` merges three parts in order: the point declarations (`program/inputgp/2310_outer_grid.txt`), the template module with the calibration and per-joint routines (`program/inputgp/calibrateXYZ_for_shifted_station.txt`), and one call per joint appended to the end of `main()`. The calls follow the line order of the converted file, so to use an ACO tour, reorder those lines first.
+
+Each call is written as `FuncName P<row><col>;`, for example `FuncName P0102;`. Replace `FuncName` with the routine to run at each joint (`MoveUpDown` in the template), and make sure the point names match the declared robtargets.
 
 ### 3.4 Run on YuMi
 
-1. In RobotStudio, paste or load `output.mod` into the **right-arm module** (`T_ROB_R`).
+1. In RobotStudio, paste or load the generated module into the **right-arm module** (`T_ROB_R`).
 2. Flash the feeder firmware and connect the YuMi digital output through the 24 → 5 V step-down.
 3. Set the iron to **350 °C**, then move to the home pose and run calibration (2.3).
 4. Run `main()`. Keep the soldering speed at **`v20` or lower** to limit tip vibration.
@@ -267,7 +333,7 @@ The script merges three files in order: point declarations (`dataset.txt`), the 
 | --- | --- |
 | ![Close-up of the iron soldering joints along a row](docs/gifs/soldering_closeup.gif) | ![Top-down view of YuMi soldering a row of joints](docs/gifs/soldering_topdown.gif) |
 
-Simplified pseudo-code (not runnable RAPID; zones, tool data and semicolons are omitted, and `.xy` stands for setting `x` and `y`). The real routine is in `rapid/proc.txt`.
+Simplified pseudo-code (not runnable RAPID; zones, tool data and semicolons are omitted, and `.xy` stands for setting `x` and `y`). The per-joint motion routine used by the generator is `MoveUpDown` in `web_pcb_selector/program/inputgp/calibrateXYZ_for_shifted_station.txt`.
 
 ```
 PROC solder(robtarget currentPoint)
