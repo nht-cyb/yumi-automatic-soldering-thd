@@ -18,6 +18,7 @@ The software pipeline goes from *"click the pins you want soldered"* to a ready-
 | Re-setup time for a new board | **Hours → ≈ 4 min** (dataset + calibration instead of re-teaching every point) |
 | Path optimization (Berlin52 benchmark) | Unordered tour **16,751 → 7,542** with ACO, the known optimum |
 | RAPID programming | **Fully generated**, with no manual editing of point names or calls |
+| Robot movement test | https://drive.google.com/drive/folders/1v9BW3aC0AH3kP2q5UkwLiJdkOLWXDny6?usp=sharing |
 | Soldering Procedures | https://drive.google.com/drive/folders/1s6_kat9STPvH8OwUOIggMFEBmVdbERJi?usp=sharing |
 ## Contents
 
