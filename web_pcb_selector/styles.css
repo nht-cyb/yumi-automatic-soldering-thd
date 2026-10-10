@@ -1,0 +1,112 @@
+.home-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.board-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.board-btn {
+    padding: 15px 25px;
+    background-color: #5244ce99;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.board-btn:hover {
+    background-color: #463df2;
+    transform: translateY(-3px);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center;         /* Center vertically */
+    gap: 20px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow wrapping if there's not enough space */
+    max-width: 220px; /* Ensure the container doesn't grow too wide */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #5244ce81;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 200px;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+button:hover {
+    background-color: #4c39dfa0;
+}
+
+#clear-button {
+    background-color: #8720a479;
+}
+
+#undo-button {
+    background-color: #c4366377;
+}
+
+#clear-button:hover {
+    background-color: #7405bea0;
+    transition: background-color 0.3s ease; /* Add transition here */
+}
+
+#undo-button:hover {
+    background-color: #bc255fb1;
+    transition: background-color 0.3s ease; /* Add transition here */
+}
+
+.board-container {
+    position: relative;
+    display: inline-block;
+}
+
+#perfboard-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+#perfboard-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: all;
+    cursor: crosshair;
+    z-index: 10; /* Ensures it stays on top */
+}

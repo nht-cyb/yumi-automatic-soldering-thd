@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5x7 PCB Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">            
+        <div class="controls">
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <button id="save-button">Save Positions</button>
+            <button id="undo-button">Undo</button>
+            <button id="clear-button">Clear All</button>
+        </div>
+
+        <div class="board-container">
+            <img src="img/5x7cm-perfboard-400.png" 
+                 id="perfboard-image" alt="Perfboard">
+            <canvas id="perfboard-overlay"></canvas>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
