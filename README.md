@@ -311,7 +311,7 @@ python generate_cmd.py       # → command/commands.txt, one call per joint
 python generate_rapid.py     # → program/clicked_positions_converted_module.txt
 ```
 
-Before running, set `input_file` at the bottom of both scripts to `converted_output/clicked_positions_converted.txt`. As committed, they point at paths that do not exist, and `generate_rapid.py` then exits without writing anything or printing an error.
+Both scripts read `converted_output/clicked_positions_converted.txt`; change `input_file` at the bottom of each to use another file. If the input is missing, `generate_rapid.py` exits without writing anything or printing an error.
 
 `generate_rapid.py` merges three parts in order: the point declarations (`program/inputgp/2310_outer_grid.txt`), the template module with the calibration and per-joint routines (`program/inputgp/calibrateXYZ_for_shifted_station.txt`), and one call per joint appended to the end of `main()`. The calls follow the line order of the converted file, so to use an ACO tour, reorder those lines first.
 

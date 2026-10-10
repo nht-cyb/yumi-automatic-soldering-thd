@@ -49,7 +49,7 @@ def save_commands(commands, output_folder):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "sorted_points/test_clicked_positions_converted.txt"  # Replace with your file path
+    input_file = "converted_output/clicked_positions_converted.txt"  # Replace with your file path
     output_folder = "command"  # Folder to save the commands
     result = generate_commands(input_file)
     if result:

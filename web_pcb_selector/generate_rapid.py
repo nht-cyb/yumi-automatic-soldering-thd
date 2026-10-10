@@ -94,7 +94,7 @@ def replace_main_commands(module_file, commands, output_file):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "converted_output/clicked_positions_converted.txt.txt"  # Replace with your file path
+    input_file = "converted_output/clicked_positions_converted.txt"  # Replace with your file path
     dataset_file = "program/inputgp/2310_outer_grid.txt"  # File containing robtarget definitions
     module_file = "program/inputgp/calibrateXYZ_for_shifted_station.txt"  # Module file to update
     output_folder = "program"  # Folder to save the commands and outputs
