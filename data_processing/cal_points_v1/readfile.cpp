@@ -1,0 +1,118 @@
+#include <fstream>
+#include<iostream>
+using namespace std;
+
+    int w = 0, h = 0, count = 0, n = 0;
+    float space = 2.54, c[100][3], p[100][3];
+    // offset from board's coordinate origin to the closest point
+    float offsetX = 0, offsetY = 0, offsetZ = 0;
+    // offset from world, calibrate YuMi to Origin and save that point in here.
+    int homeX = 0, homeY = 0, homeZ = 0;
+
+int countlength(){
+    int count = 0;
+    float i;
+    ifstream fin;
+    fin.open("input.txt"); //.txt file
+
+    while(fin >> i) {
+        count++;
+    }
+    fin.close();
+    return count;
+}
+
+void getData(int length){
+    float d[100][3], arr[100];
+
+    // Open file and put everything inside into an array
+    ifstream file;
+    file.open("input.txt");
+    for (int i = 0; i < length; i++) {
+        file >> arr[i];
+    }
+
+    // get input from array
+    w = arr[0];
+    h = arr[1];
+    offsetX = arr[2];
+    offsetY = arr[3];
+
+    //get coordinate of solder-joints in board
+    int temp = 0;
+    for (int i = 4; i < length; i=i+1) {
+        d[i-4][0] = arr[i];
+        d[i-4][1] = arr[i+1];
+        temp++;
+    }
+    n = temp/2;
+    /*//*********************** DEBUG **********************
+    cout<<"\nso phan tu ma tran d: " << temp << "\n";
+    for(int i = 0; i < length; i++){
+        for(int j = 0; j < 2; j++){
+            cout<< d[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    */    
+    for (int i = 0; i < n; i++){
+        c[i][0] = d[2*i][0];
+        c[i][1] = d[2*i][1];
+    }
+    //close the file
+    file.close();    
+}
+
+void checkData(){
+    // ******************* CHECK DATA **********************
+    // print the integers stored in the array
+    cout<<"\nKich thuoc bang mach: " << w << " " << h;
+    cout<<"\nOffset den HOME: " << offsetX << " " << offsetY;
+    cout<<"\nVi tri cac diem can han tren bang: \n";
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < 2; j++){
+            cout<< c[i][j] << " ";
+        }
+        cout << "\n";
+    }
+}
+void saveOutput(){
+    // Write output into file .txt
+    FILE *qfile;
+    qfile=fopen("output.txt","wb");
+    for(int i=0; i<n; i++){
+        for(int j=0; j<3; j++){
+            fprintf(qfile, "%f ", p[i][j]);
+        }
+        fprintf(qfile, "\n");
+    }
+    fclose(qfile);
+}
+
+int main() {
+    //initialie the array size
+    int l = countlength();
+    getData(l);
+    checkData();
+    /* //****************** CHECK IF P[] IS EMPTY OR HAS VALUE *****************
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < 3; j++){
+            cout<< p[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    */
+    for (int i = 0; i < n; i++){
+        p[i][0] = (c[i][0] - 1)* space + offsetX + homeX;
+        p[i][1] = (c[i][1] - 1)* space + offsetY + homeY;
+        p[i][2] = offsetZ + homeZ;
+    }
+    cout << "Vi tri toa do tren bang mach so voi goc toa do: \n";
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < 3; j++){
+            cout<< p[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    saveOutput();
+}
